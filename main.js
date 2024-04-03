@@ -1,65 +1,54 @@
-let currentDisplay = '0';
-let resultDisplay = false;
-let operator = 0;
-let operator1 = 0;
-let operator2 = 0;
-
+let display = '0';
+let value;
+let operator;
 
 function calculatorDisplay(val) {
-    if (currentDisplay === '0' || resultDisplay || currentDisplay === '') {
-        currentDisplay = val;
-    } else {
-        currentDisplay += val;
+    if(display === '0') {
+        display = '';
     }
-    resultDisplay = false;
-    updatedDisplay();
-    console.log(val);
+    display += val;
+    document.querySelector('.calculator__display').innerText = display;
 }
 
-function updatedDisplay() {
-    const display = document.querySelector('.calculator__display');
-    display.innerHTML = currentDisplay;
-}
-
-function setOperator(val) {
-    if (currentDisplay !== '0' && !resultDisplay) {
-        operator1 = Number(currentDisplay);
-        operator = val;
-        currentDisplay = '';
+function handleOperation(val) {
+    if(operator) {
+        calculateResult();
     }
-    console.log(val);
+    
+    value = display;
+    operator = val;
+    display = '0';
 }
 
 function calculateResult() {
     let result;
-    operator2 = Number(currentDisplay);
 
-    switch (operator) {
+    switch(operator) {
         case '+':
-            result = operator1 + operator2;
+            result = Number(value) + Number(display);
             break;
         case '-':
-            result = operator1 - operator2;
+            result = Number(value) - Number(display);
             break;
         case '*':
-            result = operator1 * operator2;
+            result = Number(value) * Number(display);
             break;
-        case '/': result = operator1 / operator2;
+        case '/':
+            result = Number(value) / Number(display);
             break;
         default:
-            currentDisplay = 'Error: Invalid Operation';
-            updatedDisplay();
-            return;
+            return `Error`
     }
 
-    currentDisplay = result.toString();
-    updatedDisplay();
-    resultDisplay = true;
+    display = result.toString();
+    document.querySelector('.calculator__display').innerText = display;
+
+    operator = null;
 }
 
 function clearDisplay() {
-    currentDisplay = '0';
-    updatedDisplay();
+    display = '0';
+    value = null;
+    operator = null;
+    document.querySelector('.calculator__display').innerText = display;
 }
-
-
